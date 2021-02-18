@@ -1,13 +1,19 @@
 name: CI
-on: push
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install modules
-        run: npm install
-      - name: Run ESLint
-        run: eslint . --ext .js,.jsx,.ts,.tsx
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '15.x'
+      - name: Lint code
+      - run: npm ci
+      - run: eslint . --ext .js,.jsx,.ts,.tsx
