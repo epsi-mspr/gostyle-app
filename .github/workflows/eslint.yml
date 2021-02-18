@@ -1,10 +1,6 @@
 name: CI
 on:
-  push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
-
+  push, pull-request
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,5 +12,7 @@ jobs:
           node-version: '12.x'
       - name: Install dependencies
         run: npm install
+      - name: Install eslint
+        run: npm install eslint -g
       - name: Run tests
         run: eslint . --ext .js,.jsx,.ts,.tsx
