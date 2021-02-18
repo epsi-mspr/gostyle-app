@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '15.x'
-      - name: Lint code
-      - run: npm ci
-      - run: eslint . --ext .js,.jsx,.ts,.tsx
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: eslint . --ext .js,.jsx,.ts,.tsx
