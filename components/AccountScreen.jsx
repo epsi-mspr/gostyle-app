@@ -1,17 +1,17 @@
 import React from 'react';
-import {Text, View } from 'react-native';
-import { Screen, shouldUseActivityState } from 'react-native-screens';
+import { Text, View } from 'react-native';
 
 function AccountScreen() {
-    return (
-      <View style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        <Text>Account!</Text>
-      </View>
-    );
+  return (
+    <View style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    >
+      <Text>Account!</Text>
+    </View>
+  );
 }
 
-export default AccountScreen
+export default AccountScreen;
