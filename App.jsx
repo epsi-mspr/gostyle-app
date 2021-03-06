@@ -2,7 +2,6 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { PropsType } from 'react-native/ReactCommon/hermes/inspector/tools/msggen/src/Type';
 import AccountScreen from './components/AccountScreen';
 import HomeScreen from './components/HomeScreen';
 import PromotionScreen from './components/PromotionScreen';
@@ -42,11 +41,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-Tab.Navigator.propTypes = {
-  TabNavigation: {
-    focused: PropsType.boolean,
-    color: PropsType.boolean,
-    size: PropsType.boolean,
-  },
-};
