@@ -10,11 +10,8 @@ function PromotionScreen() {
       alignItems: 'center',
     }}
     >
-
       <Text>La liste des promotions:</Text>
-
-      <ListPromotion/>
-
+      <ListPromotion />
     </View>
   );
 }

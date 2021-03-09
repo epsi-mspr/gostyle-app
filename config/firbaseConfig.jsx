@@ -19,4 +19,3 @@ export default Firebase;
 
 export const dbUsers = firebase.database().ref('users');
 export const dbPromo = firebase.database().ref('promotions');
-
