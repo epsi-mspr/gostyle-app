@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet,FlatList,ScrollView } from 'react-native'
-import  {db_promo} from "../config/firbaseConfig";
+import  {db_promo} from '../config/firbaseConfig';
 
 
 
