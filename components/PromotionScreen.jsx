@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View,Button } from 'react-native';
+import getListPromotion from '../api/promotion'
+import ListPromotion from '../api/promotion';
 
 function PromotionScreen() {
   return (
@@ -9,7 +11,11 @@ function PromotionScreen() {
       alignItems: 'center',
     }}
     >
-      <Text>La liste des Promotions ici!</Text>
+
+      <Text>La liste des promotions:</Text>
+
+      <ListPromotion/>
+
     </View>
   );
 }
