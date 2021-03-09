@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View,Button } from 'react-native';
-import getListPromotion from '../api/promotion'
+import { Text, View} from 'react-native';
 import ListPromotion from '../api/promotion';
 
 function PromotionScreen() {
