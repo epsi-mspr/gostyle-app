@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet,FlatList,ScrollView } from 'react-native'
-import  {db_promo} from '../config/firbaseConfig';
+import  {dbPromo} from '../config/firbaseConfig';
 
 
 
@@ -14,13 +14,13 @@ class ListPromotion extends React.Component {
     }
   }
   componentDidMount() {
-    this.getListPromo()
+    this.getListPromo();
   }
 
 
   getListPromo = async () => {
 
-    await db_promo.on('value', (snapshot)=>{
+    await dbPromo.on('value', (snapshot)=>{
       let promo = snapshot.val();
 
       for(var key in promo) {
@@ -30,7 +30,7 @@ class ListPromotion extends React.Component {
           date_debut : promo[key]['date_debut'],
           date_expiration: promo[key]['date_expiration']
         });
-        this.state.refreshing=true
+        this.state.refreshing=true;
       }
 
       console.log(snapshot.val());
@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-})
+});
 
-export default ListPromotion
+export default ListPromotion;
 
 
