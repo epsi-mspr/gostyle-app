@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, FlatList, ScrollView,
+  View, Text, FlatList, ScrollView,
 } from 'react-native';
 import { dbPromo } from '../config/firbaseConfig';
+import Card from '../components/Card';
 
 class ListPromotion extends React.Component {
   constructor(props) {
@@ -13,7 +14,9 @@ class ListPromotion extends React.Component {
   }
 
   componentDidMount() {
-    this.getListPromo();
+    this.getListPromo().then((res) => {
+      console.log(res);
+    });
   }
 
   getListPromo = async () => {
@@ -22,8 +25,10 @@ class ListPromotion extends React.Component {
       for (const key in promo) {
         this.state.data.push({
           id: key,
-          libelle: promo[key].libelle,
-          date_debut: promo[key].date_debut,
+          marque: promo[key].marque,
+          description: promo[key].description,
+          reduction: promo[key].reduction,
+          symbole: promo[key].symbole,
           date_expiration: promo[key].date_expiration,
         });
         console.log(promo);
@@ -37,17 +42,18 @@ class ListPromotion extends React.Component {
 
   renderItem = ({ item }) => (
     <ScrollView>
-      <View>
-        <Text style={styles.id}>
-          {item.id}
+      <Card>
+        <Text>
+          {item.marque}
           {' '}
           -
+          {item.reduction}
           {' '}
-          {item.libelle}
+          {item.symbole}
         </Text>
-      </View>
+      </Card>
     </ScrollView>
-  )
+  );
 
   render() {
     if (this.state.data) {
@@ -67,14 +73,5 @@ class ListPromotion extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default ListPromotion;
