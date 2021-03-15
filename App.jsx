@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AccountScreen from './components/AccountScreen';
 import HomeScreen from './components/HomeScreen';
 import PromotionScreen from './components/PromotionScreen';
-import Firebase from './config/firbaseConfig';
 
 const Tab = createBottomTabNavigator();
 

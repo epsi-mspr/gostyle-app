@@ -2,10 +2,9 @@ import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import Login from '../api/Login';
 import Signup from '../api/Signup';
 import Profile from '../api/Profile';
-import Firebase from '../config/firbaseConfig';
+import Firebase from '../config/Firebase';
 
 let SwitchNavigator;
-console.log(Firebase.auth().currentUser);
 if (Firebase.auth().currentUser) {
   SwitchNavigator = createSwitchNavigator(
     {

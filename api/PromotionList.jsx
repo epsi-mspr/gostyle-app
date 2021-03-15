@@ -2,9 +2,18 @@ import React from 'react';
 import {
   View, Text, StyleSheet, FlatList, ScrollView,
 } from 'react-native';
-import { dbPromo } from '../config/firbaseConfig';
+import { dbPromo } from '../config/Firebase';
 
-class ListPromotion extends React.Component {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+class PromotionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,27 +22,25 @@ class ListPromotion extends React.Component {
   }
 
   componentDidMount() {
-    this.getListPromo();
+    this.getPromotions();
   }
 
-  getListPromo = async () => {
+  getPromotions = async () => {
+    const { data } = this.state;
+
     await dbPromo.on('value', (snapshot) => {
       const promo = snapshot.val();
       for (const key in promo) {
-        this.state.data.push({
+        data.push({
           id: key,
           libelle: promo[key].libelle,
           date_debut: promo[key].date_debut,
           date_expiration: promo[key].date_expiration,
         });
-        console.log(promo);
       }
-      console.log(Object.entries(promo));
-      this.setState({
-        data: this.state.data,
-      });
+      this.setState({ data });
     });
-  }
+  };
 
   renderItem = ({ item }) => (
     <ScrollView>
@@ -47,34 +54,27 @@ class ListPromotion extends React.Component {
         </Text>
       </View>
     </ScrollView>
-  )
+  );
 
   render() {
-    if (this.state.data) {
+    const { data } = this.state;
+
+    if (data) {
       return (
         <FlatList
           keyExtractor={(item) => item.id.toString()}
-          data={this.state.data}
-          extraData={this.state.data}
+          data={data}
+          extraData={data}
           renderItem={this.renderItem}
         />
       );
     }
     return (
       <View>
-        <Text>Le chargement des données...!</Text>
+        <Text>Chargement des données...</Text>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-export default ListPromotion;
+export default PromotionList;

@@ -5,7 +5,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "jest"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
@@ -48,5 +50,19 @@
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
+    ]
   }
 }

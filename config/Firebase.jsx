@@ -2,7 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
-const firebaseConfig = {
+const firebaseConfiguration = {
   apiKey: 'AIzaSyBMqdXixuSenMGHwbGdo2yGkOKd-VvxS1w',
   authDomain: 'gostyle-f72c5.firebaseapp.com',
   databaseURL: 'https://gostyle-f72c5-default-rtdb.firebaseio.com',
@@ -13,9 +13,11 @@ const firebaseConfig = {
   measurementId: 'G-5SQWQE13N3',
 };
 
-const Firebase = firebase.initializeApp(firebaseConfig);
+const Firebase = firebase.initializeApp(firebaseConfiguration);
 
 export default Firebase;
 
-export const dbUsers = firebase.database().ref('users');
-export const dbPromo = firebase.database().ref('promotions');
+export const dbUsers = firebase.database()
+  .ref('users');
+export const dbPromo = firebase.database()
+  .ref('promotions');

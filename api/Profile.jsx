@@ -2,7 +2,8 @@ import React from 'react';
 import {
   View, Text, StyleSheet, Button,
 } from 'react-native';
-import Firebase from '../config/firbaseConfig';
+import * as PropTypes from 'prop-types';
+import Firebase from '../config/Firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,20 +15,28 @@ const styles = StyleSheet.create({
 });
 
 class Profile extends React.Component {
-    handleLogout = () => {
-      Firebase.auth().signOut().then((r) => r === null);
-      this.props.navigation.navigate('Login');
-    }
+  handleLogout = () => {
+    const { navigation } = this.props;
 
-    render() {
-      return (
-        <View style={styles.container}>
-          <Text>Vous êtes connectés :</Text>
-          <Text>{Firebase.auth().currentUser.email}</Text>
-          <Button title="Logout" onPress={this.handleLogout} />
-        </View>
-      );
-    }
+    Firebase.auth()
+      .signOut()
+      .then((r) => r === null);
+    navigation.navigate('Login');
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Vous êtes connectés :</Text>
+        <Text>{Firebase.auth().currentUser.email}</Text>
+        <Button title="Logout" onPress={this.handleLogout} />
+      </View>
+    );
+  }
 }
+
+Profile.propTypes = {
+  navigation: PropTypes.instanceOf(React.navigator).isRequired,
+};
 
 export default Profile;

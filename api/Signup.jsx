@@ -2,8 +2,8 @@ import React from 'react';
 import {
   View, TextInput, StyleSheet, TouchableOpacity, Text,
 } from 'react-native';
-import Firebase, { dbUsers } from '../config/firbaseConfig';
-import Profile from './Profile';
+import * as PropTypes from 'prop-types';
+import Firebase, { dbUsers } from '../config/Firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,6 +53,7 @@ class Signup extends React.Component {
   }
 
   handleCreate = async (email, password, name) => {
+    const { navigation } = this.props;
     try {
       const res = (await Firebase.auth()
         .createUserWithEmailAndPassword(email, password)).user;
@@ -65,40 +66,41 @@ class Signup extends React.Component {
         };
         await dbUsers.child(res.uid)
           .set(user);
-        this.props.navigation.navigate('Profile');
-        /* await db.collection('users')
-                  .doc(user.uid)
-                  .set(user)
-              console.log(JSON.stringify(user)) */
+        navigation.navigate('Profile');
       }
     } catch (e) {
-      alert(e.toString());
+      console.error(e);
     }
-  }
+  };
 
   render() {
+    const {
+      name,
+      email,
+      password,
+    } = this.state;
     return (
       <View style={styles.container}>
         <TextInput
           style={styles.inputBox}
-          onChangeText={(name) => this.setState({ name })}
+          onChangeText={(newName) => this.setState({ name: newName })}
           placeholder="Full Name"
         />
         <TextInput
           style={styles.inputBox}
-          onChangeText={(email) => this.setState({ email })}
+          onChangeText={(newEmail) => this.setState({ email: newEmail })}
           placeholder="Email"
           autoCapitalize="none"
         />
         <TextInput
           style={styles.inputBox}
-          onChangeText={(password) => this.setState({ password })}
+          onChangeText={(newPassword) => this.setState({ password: newPassword })}
           placeholder="Password"
           secureTextEntry
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => this.handleCreate(this.state.email, this.state.password, this.state.name)}
+          onPress={() => this.handleCreate(email, password, name)}
         >
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
@@ -106,5 +108,9 @@ class Signup extends React.Component {
     );
   }
 }
+
+Signup.propTypes = {
+  navigation: PropTypes.instanceOf(React.navigator).isRequired,
+};
 
 export default Signup;

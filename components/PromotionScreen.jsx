@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import ListPromotion from '../api/promotion';
+import PromotionList from '../api/PromotionList';
 
 function PromotionScreen() {
   return (
@@ -11,7 +11,7 @@ function PromotionScreen() {
     }}
     >
       <Text>La liste des promotions:</Text>
-      <ListPromotion />
+      <PromotionList />
     </View>
   );
 }
