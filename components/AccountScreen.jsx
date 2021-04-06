@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import Login from '../api/Login';
+import { View } from 'react-native';
 import SwitchNavigator from '../navigation/SwitchNavigator';
 
 function AccountScreen() {

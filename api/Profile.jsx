@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View, Text, StyleSheet, Button,
 } from 'react-native';
+import * as PropTypes from 'prop-types';
 import Firebase from '../config/firbaseConfig';
 
 const styles = StyleSheet.create({
@@ -15,8 +16,10 @@ const styles = StyleSheet.create({
 
 class Profile extends React.Component {
     handleLogout = () => {
+      const { navigation } = this.props;
+
       Firebase.auth().signOut().then((r) => r === null);
-      this.props.navigation.navigate('Login');
+      navigation.navigate('Login');
     }
 
     render() {
@@ -29,5 +32,8 @@ class Profile extends React.Component {
       );
     }
 }
+Profile.propTypes = {
+  navigation: PropTypes.instanceOf(React.navigator).isRequired,
+};
 
 export default Profile;

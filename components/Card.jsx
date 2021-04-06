@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import * as PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   card: {
@@ -20,9 +21,14 @@ const styles = StyleSheet.create({
 });
 
 export default function Card(props) {
+  const { children } = props;
   return (
     <View style={styles.card}>
-      <View style={styles.cardContent}>{props.children}</View>
+      <View style={styles.cardContent}>{children}</View>
     </View>
   );
 }
+
+Card.propTypes = {
+  children: PropTypes.instanceOf(React.children).isRequired,
+};

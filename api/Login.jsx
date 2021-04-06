@@ -2,8 +2,8 @@ import React from 'react';
 import {
   View, TextInput, StyleSheet, TouchableOpacity, Text, Button,
 } from 'react-native';
+import * as PropTypes from 'prop-types';
 import Firebase, { dbUsers } from '../config/firbaseConfig';
-import Profile from './Profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,12 +52,13 @@ class Login extends React.Component {
   }
 
   LoginController = async (email, password) => {
+    const { navigation } = this.props;
     await Firebase.auth().signOut();
     try {
       await Firebase.auth().signInWithEmailAndPassword(email, password);
       Firebase.auth().onAuthStateChanged((user) => {
         this.getUserCurrent(user.uid);
-        this.props.navigation.navigate('Profile');
+        navigation.navigate('Profile');
       });
     } catch (error) {
       alert(error.toString());
@@ -70,44 +71,52 @@ class Login extends React.Component {
   }
 
   componentDidMount = () => {
+    const { navigation } = this.props;
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.getUserCurrent(user.uid);
-        if (user != null) {
-          this.props.navigation.navigate('Profile');
-        }
+        navigation.navigate('Profile');
       }
     });
-  }
+  };
 
   render() {
+    const { navigation } = this.props;
+    const {
+      email,
+      password,
+    } = this.state;
     return (
       <View style={styles.container}>
         <TextInput
           style={styles.inputBox}
-          onChangeText={(email) => this.setState({ email })}
+          onChangeText={(newEmail) => this.setState({ email: newEmail })}
           placeholder="Email"
           autoCapitalize="none"
         />
         <TextInput
           style={styles.inputBox}
-          onChangeText={(password) => this.setState({ password })}
+          onChangeText={(newPassword) => this.setState({ password: newPassword })}
           placeholder="Password"
           secureTextEntry
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => this.LoginController(this.state.email, this.state.password)}
+          onPress={() => this.LoginController(email, password)}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Button
-          title="Vous n'avez pas de compte? appuyer ici"
-          onPress={() => this.props.navigation.navigate('Signup')}
+          title="Vous n'avez pas de compte? Clicker ici"
+          onPress={() => navigation.navigate('Signup')}
         />
       </View>
     );
   }
 }
+
+Login.propTypes = {
+  navigation: PropTypes.instanceOf(React.navigator).isRequired,
+};
 
 export default Login;

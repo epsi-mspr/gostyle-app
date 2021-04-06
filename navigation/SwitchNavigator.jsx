@@ -5,7 +5,6 @@ import Profile from '../api/Profile';
 import Firebase from '../config/firbaseConfig';
 
 let SwitchNavigator;
-console.log(Firebase.auth().currentUser);
 if (Firebase.auth().currentUser) {
   SwitchNavigator = createSwitchNavigator(
     {

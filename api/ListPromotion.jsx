@@ -20,48 +20,49 @@ class ListPromotion extends React.Component {
   }
 
   getListPromo = async () => {
+    const { data } = this.state;
     await dbPromo.on('value', (snapshot) => {
       const promo = snapshot.val();
-      for (const key in promo) {
-        this.state.data.push({
-          id: key,
-          marque: promo[key].marque,
-          description: promo[key].description,
-          reduction: promo[key].reduction,
-          symbole: promo[key].symbole,
-          date_expiration: promo[key].date_expiration,
+      const keys = Object.keys(promo);
+      const values = Object.values(promo);
+      for (let i = 0; i < keys.length; i += 1) {
+        data.push({
+          id: keys[i],
+          code_promo: values[i].code_promo,
+          marque: values[i].marque,
+          description: values[i].description,
+          reduction: values[i].reduction,
+          symbole: values[i].symbole,
+          date_expiration: values[i].date_expiration,
         });
-        console.log(promo);
       }
-      console.log(Object.entries(promo));
-      this.setState({
-        data: this.state.data,
-      });
+      this.setState({ data });
     });
   }
 
   renderItem = ({ item }) => (
-    <ScrollView>
-      <Card>
-        <Text>
-          {item.marque}
-          {' '}
-          -
-          {item.reduction}
-          {' '}
-          {item.symbole}
-        </Text>
-      </Card>
-    </ScrollView>
+
+    <Card>
+      <Text>
+        {item.code_promo}
+        {' '}
+        -
+        {item.reduction}
+        {' '}
+        {item.symbole}
+      </Text>
+    </Card>
+
   );
 
   render() {
-    if (this.state.data) {
+    const { data } = this.state;
+    if (data) {
       return (
         <FlatList
           keyExtractor={(item) => item.id.toString()}
-          data={this.state.data}
-          extraData={this.state.data}
+          data={data}
+          extraData={data}
           renderItem={this.renderItem}
         />
       );
