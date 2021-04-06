@@ -22,7 +22,8 @@ class PromotionList extends React.Component {
   }
 
   componentDidMount() {
-    this.getPromotions();
+    this.getPromotions()
+      .then((err) => err);
   }
 
   getPromotions = async () => {
@@ -30,14 +31,17 @@ class PromotionList extends React.Component {
 
     await dbPromo.on('value', (snapshot) => {
       const promo = snapshot.val();
-      for (const key in promo) {
+      const keys = Object.keys(promo);
+      const values = Object.values(promo);
+      for (let i = 0; i < keys.length; i += 1) {
         data.push({
-          id: key,
-          libelle: promo[key].libelle,
-          date_debut: promo[key].date_debut,
-          date_expiration: promo[key].date_expiration,
+          id: keys[i],
+          libelle: values[i].libelle,
+          date_debut: values[i].date_debut,
+          date_expiration: values[i].date_expiration,
         });
       }
+      console.log(Object.keys(promo));
       this.setState({ data });
     });
   };
