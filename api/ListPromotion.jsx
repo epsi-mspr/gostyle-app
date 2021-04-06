@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Text, FlatList, ScrollView,
+  View, Text, FlatList,
 } from 'react-native';
 import { dbPromo } from '../config/firbaseConfig';
 import Card from '../components/Card';
