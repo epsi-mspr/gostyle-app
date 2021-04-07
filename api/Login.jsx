@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import * as PropTypes from 'prop-types';
 import Firebase, { dbUsers } from '../config/firbaseConfig';
+import Card from '../components/Card';
 
 const styles = StyleSheet.create({
   container: {
@@ -87,30 +88,32 @@ class Login extends React.Component {
       password,
     } = this.state;
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={(newEmail) => this.setState({ email: newEmail })}
-          placeholder="Email"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={(newPassword) => this.setState({ password: newPassword })}
-          placeholder="Password"
-          secureTextEntry
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => this.LoginController(email, password)}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <Button
-          title="Vous n'avez pas de compte? Clicker ici"
-          onPress={() => navigation.navigate('Signup')}
-        />
-      </View>
+      <Card>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(newEmail) => this.setState({ email: newEmail })}
+            placeholder="Email"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(newPassword) => this.setState({ password: newPassword })}
+            placeholder="Password"
+            secureTextEntry
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.LoginController(email, password)}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <Button
+            title="Vous n'avez pas de compte? Clicker ici"
+            onPress={() => navigation.navigate('Signup')}
+          />
+        </View>
+      </Card>
     );
   }
 }

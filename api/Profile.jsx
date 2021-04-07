@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import * as PropTypes from 'prop-types';
 import Firebase from '../config/firbaseConfig';
+import Card from '../components/Card';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,11 +25,13 @@ class Profile extends React.Component {
 
     render() {
       return (
-        <View style={styles.container}>
-          <Text>Vous êtes connectés :</Text>
-          <Text>{Firebase.auth().currentUser.email}</Text>
-          <Button title="Logout" onPress={this.handleLogout} />
-        </View>
+        <Card>
+          <View style={styles.container}>
+            <Text>Vous êtes connectés :</Text>
+            <Text>{Firebase.auth().currentUser.email}</Text>
+            <Button title="Logout" onPress={this.handleLogout} />
+          </View>
+        </Card>
       );
     }
 }

@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-  View, TextInput, StyleSheet, TouchableOpacity, Text,
+  View, TextInput, StyleSheet, TouchableOpacity, Text, Button,
 } from 'react-native';
 import * as PropTypes from 'prop-types';
 import Firebase, { dbUsers } from '../config/firbaseConfig';
+import Card from '../components/Card';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,6 +76,7 @@ class Signup extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props;
     const {
       firstName,
       lastName,
@@ -82,36 +84,42 @@ class Signup extends React.Component {
       password,
     } = this.state;
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
-          placeholder="First name"
-        />
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={(newLastName) => this.setState({ lastName: newLastName })}
-          placeholder="First name"
-        />
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={(newEmail) => this.setState({ email: newEmail })}
-          placeholder="Email"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={(newPassword) => this.setState({ password: newPassword })}
-          placeholder="Password"
-          secureTextEntry
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => this.handleCreate(firstName, lastName, email, password)}
-        >
-          <Text style={styles.buttonText}>Signup</Text>
-        </TouchableOpacity>
-      </View>
+      <Card>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
+            placeholder="First name"
+          />
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(newLastName) => this.setState({ lastName: newLastName })}
+            placeholder="First name"
+          />
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(newEmail) => this.setState({ email: newEmail })}
+            placeholder="Email"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(newPassword) => this.setState({ password: newPassword })}
+            placeholder="Password"
+            secureTextEntry
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.handleCreate(firstName, lastName, email, password)}
+          >
+            <Text style={styles.buttonText}>Signup</Text>
+          </TouchableOpacity>
+          <Button
+            title="Annuler"
+            onPress={() => navigation.navigate('Login')}
+          />
+        </View>
+      </Card>
     );
   }
 }
