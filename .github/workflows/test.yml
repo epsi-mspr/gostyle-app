@@ -15,4 +15,4 @@ jobs:
       - name: Install eslint
         run: npm install eslint -g
       - name: Run tests
-        run: npm run jest
+        run: npm test
