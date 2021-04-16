@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import SwitchNavigator from '../navigation/SwitchNavigator';
+import { View, Text } from 'react-native';
 
 function AccountScreen() {
   return (
@@ -10,7 +9,7 @@ function AccountScreen() {
       alignItems: 'center',
     }}
     >
-      <SwitchNavigator />
+      <Text>AccountScreen</Text>
     </View>
   );
 }
