@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-function AccountScreen() {
+export default function PromotionScreen() {
   return (
     <View style={{
       flex: 1,
@@ -9,9 +9,7 @@ function AccountScreen() {
       alignItems: 'center',
     }}
     >
-      <Text>AccountScreen</Text>
+      <Text>La liste des promotions:</Text>
     </View>
   );
 }
-
-export default AccountScreen;

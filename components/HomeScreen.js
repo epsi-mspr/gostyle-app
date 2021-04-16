@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-function HomeScreen() {
+export default function HomeScreen() {
   return (
     <View style={{
       flex: 1,
@@ -13,5 +13,3 @@ function HomeScreen() {
     </View>
   );
 }
-
-export default HomeScreen;
