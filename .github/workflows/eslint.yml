@@ -13,6 +13,6 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Install eslint
-        run: npm install eslint -g
+        run: npm install eslint babel-eslint -g
       - name: Run tests
         run: eslint . --ext .js,.jsx,.ts,.tsx
