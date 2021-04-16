@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import QRCodeScanner from './QRCodeScanner';
 
 function HomeScreen() {
   return (
@@ -9,7 +10,7 @@ function HomeScreen() {
       alignItems: 'center',
     }}
     >
-      <Text>HomeScreen</Text>
+      <QRCodeScanner />
     </View>
   );
 }
