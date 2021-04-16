@@ -35,7 +35,18 @@ test('clicking the home button should redirect to the home page', async () => {
 
   fireEvent(homePage, 'click');
 
-  const homeScreen = await findByText('Home');
+  const homeScreen = await findByText('HomeScreen');
   expect(homeScreen)
+    .toBeTruthy();
+});
+
+test('clicking the promotions button should redirect to the promotions page', async () => {
+  const { findByText } = render(<App />);
+  const promotionsPage = await findByText('Promotions');
+
+  fireEvent(promotionsPage, 'click');
+
+  const promotionsScreen = await findByText('La liste des promotions:');
+  expect(promotionsScreen)
     .toBeTruthy();
 });
