@@ -91,7 +91,7 @@ class QRCodeScanner extends React.Component {
             />
           )
         }
-        <Text>.</Text>
+        <Text>Scan</Text>
       </View>
     );
   }
