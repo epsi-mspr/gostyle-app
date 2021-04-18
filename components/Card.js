@@ -1,23 +1,26 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import * as PropTypes from 'prop-types';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import * as PropTypes from "prop-types";
 
 const styles = StyleSheet.create({
   card: {
     borderRadius: 6,
     elevation: 3,
-    backgroundColor: '#fff',
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#333',
+    backgroundColor: "#fff",
+    shadowOffset: {
+      width: 1,
+      height: 1
+    },
+    shadowColor: "#333",
     shadowOpacity: 0.3,
     shadowRadius: 2,
     marginHorizontal: 4,
-    marginVertical: 6,
+    marginVertical: 6
   },
   cardContent: {
     marginHorizontal: 100,
-    marginVertical: 30,
-  },
+    marginVertical: 30
+  }
 });
 
 export default function Card(props) {
@@ -30,5 +33,5 @@ export default function Card(props) {
 }
 
 Card.propTypes = {
-  children: PropTypes.instanceOf(React.children).isRequired,
+  children: PropTypes.node.isRequired
 };

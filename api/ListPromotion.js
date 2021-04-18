@@ -1,27 +1,29 @@
-import React from 'react';
+import React from "react";
 import {
-  View, Text, FlatList,
-} from 'react-native';
-import { dbPromo } from '../config/firbaseConfig';
-import Card from '../components/Card';
+  View, Text, FlatList
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { dbPromo } from "../config/firebaseConfig";
+import Card from "../components/Card";
 
 class ListPromotion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: []
     };
   }
 
   componentDidMount() {
-    this.getListPromo().then((res) => {
-      console.log(res);
-    });
+    this.getListPromo()
+      .then((res) => {
+        console.log(res);
+      });
   }
 
   getListPromo = async () => {
     const { data } = this.state;
-    await dbPromo.on('value', (snapshot) => {
+    await dbPromo.on("value", (snapshot) => {
       const promo = snapshot.val();
       const keys = Object.keys(promo);
       const values = Object.values(promo);
@@ -33,22 +35,22 @@ class ListPromotion extends React.Component {
           description: values[i].description,
           reduction: values[i].reduction,
           symbole: values[i].symbole,
-          date_expiration: values[i].date_expiration,
+          date_expiration: values[i].date_expiration
         });
       }
       this.setState({ data });
     });
-  }
+  };
 
   renderItem = ({ item }) => (
 
     <Card>
       <Text>
         {item.code_promo}
-        {' '}
+        {" "}
         -
         {item.reduction}
-        {' '}
+        {" "}
         {item.symbole}
       </Text>
     </Card>
@@ -75,4 +77,10 @@ class ListPromotion extends React.Component {
   }
 }
 
-export default ListPromotion;
+// eslint-disable-next-line func-names
+export default function(props) {
+  const navigation = useNavigation();
+
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <ListPromotion {...props} navigation={navigation} />;
+}
