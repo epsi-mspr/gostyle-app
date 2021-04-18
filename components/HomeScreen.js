@@ -1,15 +1,18 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { View } from "react-native";
+import QRCodeScanner from "./QRCodeScanner";
 
 export default function HomeScreen() {
   return (
-    <View style={{
+    <View
+      testID="home"
+      style={{
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center"
     }}
     >
-      <Text>HomeScreen</Text>
+      <QRCodeScanner />
     </View>
   );
 }
