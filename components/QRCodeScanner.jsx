@@ -9,7 +9,6 @@ import { dbPromo } from '../config/firbaseConfig';
 class QRCodeScanner extends React.Component {
   constructor(props) {
     super(props);
-    // this.promo = undefined;
     this.state = {
       hasCameraPermission: null,
       scanned: false,
