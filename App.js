@@ -2,13 +2,13 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AccountScreen from './components/AccountScreen';
 import HomeScreen from './components/HomeScreen';
 import PromotionScreen from './components/PromotionScreen';
-
-const Tab = createBottomTabNavigator();
+import AccountScreen from './components/AccountScreen';
 
 export default function App() {
+  const Tab = createBottomTabNavigator();
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -25,13 +25,16 @@ export default function App() {
             } else if (route.name === 'Promotions') {
               iconName = icon.focused ? 'list' : 'list-outline';
             }
-
-            return <Ionicons name={iconName} size={icon.size} color={icon.color} />;
-          },
+            const {
+              size,
+              color
+            } = icon;
+            return <Ionicons name={iconName} size={size} color={color} />;
+          }
         })}
         tabBarOptions={{
           activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
+          inactiveTintColor: 'gray'
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
