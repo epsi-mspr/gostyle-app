@@ -1,8 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
-import SwitchNavigator from '../navigation/SwitchNavigator';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import Login from '../api/Login';
+import Profile from '../api/Profile';
+import Signup from '../api/Signup';
+import Firebase from '../config/firebaseConfig';
 
 function AccountScreen() {
+  const SwitchNavigator = createAppContainer(createSwitchNavigator(
+    {
+      Login,
+      Profile,
+      Signup
+    },
+    { initialRouteName: Firebase.auth().currentUser ? 'Profile' : 'Login' }
+  ));
+
   return (
     <View style={{
       flex: 1,
