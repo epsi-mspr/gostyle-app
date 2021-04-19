@@ -2,8 +2,8 @@ import React from 'react';
 import {
   TextInput, StyleSheet, TouchableOpacity, Text, Button
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import * as PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import Firebase, { dbUsers } from '../config/firebaseConfig';
 import Card from '../components/Card';
 
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingVertical: 5,
     alignItems: 'center',
-    backgroundColor: '#F6820D',
-    borderColor: '#F6820D',
+    backgroundColor: '#FFA611',
+    borderColor: '#FFA611',
     borderWidth: 1,
     borderRadius: 5,
     width: 200
@@ -44,50 +44,58 @@ const styles = StyleSheet.create({
   }
 });
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: '',
+      lastName: '',
       email: '',
       password: ''
     };
   }
 
-  LoginController = async () => {
-    const {
-      email,
-      password
-    } = this.state;
-    await Firebase.auth()
-      .signOut();
-    try {
-      await Firebase.auth()
-        .signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      alert(error.toString());
-    }
-  };
-
-  getUserCurrent = async (uid) => {
-    await dbUsers.child(uid)
-      .once('value');
-  };
-
-  componentDidMount = () => {
+  handleCreate = async (firstName, lastName, email, password) => {
     const { navigation } = this.props;
-    Firebase.auth()
-      .onAuthStateChanged((user) => {
-        if (user) {
-          this.getUserCurrent(user.uid);
-          navigation.navigate('Account', { screen: 'Profile' });
-        }
-      });
+    try {
+      const res = (await Firebase.auth()
+        .createUserWithEmailAndPassword(email, password)).user;
+      if (res.uid) {
+        const user = {
+          uid: res.uid,
+          firstName,
+          lastName,
+          email
+        };
+        await dbUsers.child(res.uid)
+          .set(user);
+        navigation.navigate('Account', { 'screen': 'Profile' });
+      }
+    } catch (e) {
+      alert(e.toString());
+    }
   };
 
   render() {
     const { navigation } = this.props;
+    const {
+      firstName,
+      lastName,
+      email,
+      password
+    } = this.state;
     return (
       <Card style={styles.container}>
+        <TextInput
+          style={styles.inputBox}
+          onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
+          placeholder="First name"
+        />
+        <TextInput
+          style={styles.inputBox}
+          onChangeText={(newLastName) => this.setState({ lastName: newLastName })}
+          placeholder="Last name"
+        />
         <TextInput
           style={styles.inputBox}
           onChangeText={(newEmail) => this.setState({ email: newEmail })}
@@ -103,22 +111,20 @@ class Login extends React.Component {
         <TouchableOpacity
           testID="touchable-opacity"
           style={styles.button}
-          onPress={() => this.LoginController()}
+          onPress={() => this.handleCreate(firstName, lastName, email, password)}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
         <Button
-          title="Vous n'avez pas de compte? Clicker ici"
-          onPress={() => {
-            navigation.navigate('Account', { screen: 'Signup' });
-          }}
+          title="Annuler"
+          onPress={() => navigation.navigate('Login')}
         />
       </Card>
     );
   }
 }
 
-Login.propTypes = {
+Signup.propTypes = {
   navigation: PropTypes.instanceOf(React.navigator).isRequired
 };
 
@@ -127,5 +133,5 @@ export default function (props) {
   const navigation = useNavigation();
 
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Login {...props} navigation={navigation} />;
+  return <Signup {...props} navigation={navigation} />;
 }
