@@ -3,6 +3,7 @@ import React from 'react';
 import { fireEvent, render, waitFor, act } from '@testing-library/react-native';
 import { useNavigation } from '@react-navigation/native';
 import Login from '../../api/Login';
+import Firebase from '../../config/firebaseConfig';
 
 jest.mock('@react-navigation/native', () => ({
   createNavigatorFactory: jest.fn(),
@@ -15,34 +16,41 @@ beforeEach(() => {
   useNavigation.mockReset();
 });
 
-it('should login to firebase', async () => {
-  const mockNavigate = jest.fn();
-  useNavigation.mockImplementation(() => ({ navigate: mockNavigate }));
-  global.fetch.mockResolvedValueOnce({
-    json: () => Promise.resolve({ token: 'fake-token' })
+describe('Login', () => {
+  afterAll(() => {
+    Firebase.database()
+      .goOffline();
   });
 
-  const username = 'test@test.fr';
-  const password = 'test123';
+  it('should login to firebase', async () => {
+    const mockNavigate = jest.fn();
+    useNavigation.mockImplementation(() => ({ navigate: mockNavigate }));
+    global.fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({ token: 'fake-token' })
+    });
 
-  const {
-    getByPlaceholderText,
-    getByTestId
-  } = render(<Login />);
+    const username = 'test@test.fr';
+    const password = 'test123';
 
-  const button = getByTestId('touchable-opacity');
+    const {
+      getByPlaceholderText,
+      getByTestId
+    } = render(<Login />);
 
-  await act(async () => {
-    fireEvent.changeText(getByPlaceholderText(/Email/i), username);
-    fireEvent.changeText(getByPlaceholderText(/Password/i), password);
+    const button = getByTestId('touchable-opacity');
+
+    await act(async () => {
+      fireEvent.changeText(getByPlaceholderText(/Email/i), username);
+      fireEvent.changeText(getByPlaceholderText(/Password/i), password);
+    });
+
+    await act(async () => {
+      fireEvent.press(button);
+    });
+
+    await waitFor(() => expect(mockNavigate)
+      .toHaveBeenCalledTimes(1));
+    expect(mockNavigate)
+      .toHaveBeenCalledWith('Account', { 'screen': 'Profile' });
   });
-
-  await act(async () => {
-    fireEvent.press(button);
-  });
-
-  await waitFor(() => expect(mockNavigate)
-    .toHaveBeenCalledTimes(1));
-  expect(mockNavigate)
-    .toHaveBeenCalledWith('Account', { 'screen': 'Profile' });
 });

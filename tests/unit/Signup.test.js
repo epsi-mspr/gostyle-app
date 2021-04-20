@@ -3,6 +3,7 @@ import React from 'react';
 import { fireEvent, render, waitFor, act } from '@testing-library/react-native';
 import { useNavigation } from '@react-navigation/native';
 import Signup from '../../api/Signup';
+import Firebase from '../../config/firebaseConfig';
 
 jest.mock('@react-navigation/native', () => ({
   createNavigatorFactory: jest.fn(),
@@ -15,40 +16,47 @@ beforeEach(() => {
   useNavigation.mockReset();
 });
 
-it('should sign up to firebase', async () => {
-  const mockNavigate = jest.fn();
-  useNavigation.mockImplementation(() => ({ navigate: mockNavigate }));
-  global.fetch.mockResolvedValueOnce({
-    json: () => Promise.resolve({ token: 'fake-token' })
+describe('Signup', () => {
+  afterAll(() => {
+    Firebase.database()
+      .goOffline();
   });
 
-  const firstname = 'test';
-  const lastname = 'test';
-  const email = `${Math.random()
-    .toString(36)
-    .substring(2, 15)}@test.fr`;
-  const password = 'test123';
+  it('should sign up to firebase', async () => {
+    const mockNavigate = jest.fn();
+    useNavigation.mockImplementation(() => ({ navigate: mockNavigate }));
+    global.fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({ token: 'fake-token' })
+    });
 
-  const {
-    getByPlaceholderText,
-    getByTestId
-  } = render(<Signup navigation={mockNavigate} />);
+    const firstname = 'test';
+    const lastname = 'test';
+    const email = `${Math.random()
+      .toString(36)
+      .substring(2, 15)}@test.fr`;
+    const password = 'test123';
 
-  const button = getByTestId('touchable-opacity');
+    const {
+      getByPlaceholderText,
+      getByTestId
+    } = render(<Signup navigation={mockNavigate} />);
 
-  await act(async () => {
-    fireEvent.changeText(getByPlaceholderText(/First name/i), firstname);
-    fireEvent.changeText(getByPlaceholderText(/Last name/i), lastname);
-    fireEvent.changeText(getByPlaceholderText(/Email/i), email);
-    fireEvent.changeText(getByPlaceholderText(/Password/i), password);
+    const button = getByTestId('touchable-opacity');
+
+    await act(async () => {
+      fireEvent.changeText(getByPlaceholderText(/First name/i), firstname);
+      fireEvent.changeText(getByPlaceholderText(/Last name/i), lastname);
+      fireEvent.changeText(getByPlaceholderText(/Email/i), email);
+      fireEvent.changeText(getByPlaceholderText(/Password/i), password);
+    });
+
+    await act(async () => {
+      fireEvent.press(button);
+    });
+
+    await waitFor(() => expect(mockNavigate)
+      .toHaveBeenCalledTimes(1));
+    expect(mockNavigate)
+      .toHaveBeenCalledWith('Account', { 'screen': 'Profile' });
   });
-
-  await act(async () => {
-    fireEvent.press(button);
-  });
-
-  await waitFor(() => expect(mockNavigate)
-    .toHaveBeenCalledTimes(1));
-  expect(mockNavigate)
-    .toHaveBeenCalledWith('Account', { 'screen': 'Profile' });
 });
