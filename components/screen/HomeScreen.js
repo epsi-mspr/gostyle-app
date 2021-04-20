@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import QRCodeScanner from "./QRCodeScanner";
+import QRCodeScanner from "../QRCodeScanner";
 
 export default function HomeScreen() {
   return (

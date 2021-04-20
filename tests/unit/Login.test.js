@@ -2,7 +2,7 @@ import 'react-native';
 import React from 'react';
 import { fireEvent, render, waitFor, act } from '@testing-library/react-native';
 import { useNavigation } from '@react-navigation/native';
-import Login from '../../api/Login';
+import Login from '../../components/account/Login';
 
 jest.mock('@react-navigation/native', () => ({
   createNavigatorFactory: jest.fn(),

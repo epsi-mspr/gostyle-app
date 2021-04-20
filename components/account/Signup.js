@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  TextInput, StyleSheet, TouchableOpacity, Text, Button
+  TextInput, StyleSheet, TouchableOpacity, Text, Button, Alert
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import * as PropTypes from 'prop-types';
-import Firebase, { dbUsers } from '../config/firebaseConfig';
-import Card from '../components/Card';
+import { useNavigation } from '@react-navigation/native';
+import Card from '../Card';
+import { singUp } from '../../api/firebaseApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingVertical: 5,
     alignItems: 'center',
-    backgroundColor: '#F6820D',
-    borderColor: '#F6820D',
+    backgroundColor: '#FFA611',
+    borderColor: '#FFA611',
     borderWidth: 1,
     borderRadius: 5,
     width: 200
@@ -44,50 +44,66 @@ const styles = StyleSheet.create({
   }
 });
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: '',
+      lastName: '',
       email: '',
       password: ''
     };
   }
 
-  LoginController = async () => {
+  handleCreate = async () => {
+    const { navigation } = this.props;
     const {
+      firstName,
+      lastName,
       email,
       password
     } = this.state;
-    await Firebase.auth()
-      .signOut();
-    try {
-      await Firebase.auth()
-        .signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      alert(error.toString());
+
+    if (!firstName) {
+      Alert.alert('First name is required:','Enter your first name');
+    }else if(!lastName){
+      Alert.alert('Last name is required:','Enter your last name');
+    } else if (!email) {
+      Alert.alert('Email is required:','Enter your email.');
+    } else if (!password) {
+      Alert.alert('Password is required:','Enter your password');
+    } else {
+      await singUp(
+        email,
+        password,
+        firstName,
+        lastName
+      );
+      navigation.navigate('Account', { 'screen': 'Profile' });
+
     }
-  };
-
-  getUserCurrent = async (uid) => {
-    await dbUsers.child(uid)
-      .once('value');
-  };
-
-  componentDidMount = () => {
-    const { navigation } = this.props;
-    Firebase.auth()
-      .onAuthStateChanged((user) => {
-        if (user) {
-          this.getUserCurrent(user.uid);
-          navigation.navigate('Account', { screen: 'Profile' });
-        }
-      });
   };
 
   render() {
     const { navigation } = this.props;
+    const {
+      firstName,
+      lastName,
+      email,
+      password
+    } = this.state;
     return (
       <Card style={styles.container}>
+        <TextInput
+          style={styles.inputBox}
+          onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
+          placeholder="First name"
+        />
+        <TextInput
+          style={styles.inputBox}
+          onChangeText={(newLastName) => this.setState({ lastName: newLastName })}
+          placeholder="Last name"
+        />
         <TextInput
           style={styles.inputBox}
           onChangeText={(newEmail) => this.setState({ email: newEmail })}
@@ -103,22 +119,20 @@ class Login extends React.Component {
         <TouchableOpacity
           testID="touchable-opacity"
           style={styles.button}
-          onPress={() => this.LoginController()}
+          onPress={() => this.handleCreate(firstName,lastName, email, password)}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
         <Button
-          title="Vous n'avez pas de compte? Clicker ici"
-          onPress={() => {
-            navigation.navigate('Account', { screen: 'Signup' });
-          }}
+          title="Annuler"
+          onPress={() => navigation.navigate('Login')}
         />
       </Card>
     );
   }
 }
 
-Login.propTypes = {
+Signup.propTypes = {
   navigation: PropTypes.instanceOf(React.navigator).isRequired
 };
 
@@ -127,5 +141,5 @@ export default function (props) {
   const navigation = useNavigation();
 
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Login {...props} navigation={navigation} />;
+  return <Signup {...props} navigation={navigation} />;
 }

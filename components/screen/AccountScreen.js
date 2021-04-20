@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import Login from '../api/Login';
-import Profile from '../api/Profile';
-import Signup from '../api/Signup';
-import Firebase from '../config/firebaseConfig';
+import Login from '../account/Login';
+import Profile from '../account/Profile';
+import Signup from '../account/Signup';
+import Firebase from '../../config/firebaseConfig';
 
 function AccountScreen() {
   const SwitchNavigator = createAppContainer(createSwitchNavigator(

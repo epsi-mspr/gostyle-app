@@ -2,9 +2,9 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './components/HomeScreen';
-import PromotionScreen from './components/PromotionScreen';
-import AccountScreen from './components/AccountScreen';
+import HomeScreen from './components/screen/HomeScreen';
+import PromotionScreen from './components/screen/PromotionScreen';
+import AccountScreen from './components/screen/AccountScreen';
 
 export default function App() {
   const Tab = createBottomTabNavigator();

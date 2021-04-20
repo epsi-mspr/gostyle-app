@@ -4,7 +4,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { dbPromo } from "../config/firebaseConfig";
-import Card from "../components/Card";
+import Card from "./Card";
 
 class ListPromotion extends React.Component {
   constructor(props) {
@@ -16,9 +16,6 @@ class ListPromotion extends React.Component {
 
   componentDidMount() {
     this.getListPromo()
-      .then((res) => {
-        console.log(res);
-      });
   }
 
   getListPromo = async () => {
