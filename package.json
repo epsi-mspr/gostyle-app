@@ -7,7 +7,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "jest": "jest"
+    "jest": "jest --detectOpenHandles"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
