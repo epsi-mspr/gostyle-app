@@ -5,8 +5,7 @@ import Firebase from '../../config/firebaseConfig';
 
 describe('App', () => {
   afterAll(() => {
-    Firebase.database()
-      .goOffline();
+    Firebase.delete();
   });
 
   test('page should have 3 differents pages (Home, Account, Promotions)', async () => {

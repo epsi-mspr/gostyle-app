@@ -18,8 +18,7 @@ beforeEach(() => {
 
 describe('Login', () => {
   afterAll(() => {
-    Firebase.database()
-      .goOffline();
+    Firebase.delete();
   });
 
   it('should login to firebase', async () => {
