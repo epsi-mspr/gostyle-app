@@ -28,7 +28,8 @@
           ".jsx"
         ]
       }
-    ]
+    ],
+    "global-require": 0
   },
   "parser": "babel-eslint"
 }
