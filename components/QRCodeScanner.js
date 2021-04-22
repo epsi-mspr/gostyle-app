@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Text, StyleSheet, View, Button
+  Text, StyleSheet, View, Button, Alert
 } from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
@@ -9,7 +9,6 @@ import { dbPromo } from "../config/firebaseConfig";
 export default class QRCodeScanner extends React.Component {
   constructor(props) {
     super(props);
-    // this.promo = undefined;
     this.state = {
       hasCameraPermission: null,
       scanned: false
@@ -39,7 +38,7 @@ export default class QRCodeScanner extends React.Component {
     const promo = (await dbPromo.child(uid)
       .once("value")).val();
     if (promo != null) {
-      alert(`Vous avez une promotion:\n - Code promotion: ${promo.code_promo}\n - Marque: ${promo.marque}
+      Alert.alert(`Vous avez une promotion:\n - Code promotion: ${promo.code_promo}\n - Marque: ${promo.marque}
       - Description: ${promo.description}\n - Reduction: ${promo.reduction} ${promo.symbole}
       - Date expiration: ${promo.date_expiration}`);
     } else {

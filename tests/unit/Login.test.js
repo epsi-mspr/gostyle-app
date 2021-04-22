@@ -1,13 +1,13 @@
-import React from 'react';
-import { fireEvent, render, waitFor, act } from '@testing-library/react-native';
-import App from '../../App';
+import React from "react";
+import { fireEvent, render, waitFor, act } from "@testing-library/react-native";
+import App from "../../App";
 
-jest.mock('@react-native-community/masked-view', () => ({}));
+jest.mock("@react-native-community/masked-view", () => ({}));
 
-describe('login', () => {
-  it('should logout correctly', async () => {
-    const username = 'test@test.fr';
-    const password = 'test123';
+describe("login", () => {
+  it("should logout correctly", async () => {
+    const username = "test@test.fr";
+    const password = "test123";
     const {
       getByPlaceholderText,
       findByTestId,
@@ -15,10 +15,10 @@ describe('login', () => {
     } = render(<App />);
 
     // Navigate to the account page
-    const accountPage = await findByText('Account');
-    fireEvent(accountPage, 'click');
+    const accountPage = await findByText("Account");
+    fireEvent(accountPage, "click");
     // Type email and password then click login button
-    const loginButton = await findByTestId('touchable-opacity');
+    const loginButton = await findByTestId("touchable-opacity");
     await act(async () => {
       fireEvent.changeText(getByPlaceholderText(/Email/i), username);
       fireEvent.changeText(getByPlaceholderText(/Password/i), password);
@@ -27,21 +27,21 @@ describe('login', () => {
       fireEvent.press(loginButton);
     });
     // Click on the logout button
-    const logoutButton = await findByTestId('logout');
+    const logoutButton = await findByTestId("logout");
     await act(async () => {
       fireEvent.press(logoutButton);
     });
 
-    expect(await findByText('Vous n\'avez pas de compte? Clicker ici'))
+    expect(await findByText("Vous n'avez pas de compte? Clicker ici"))
       .toBeTruthy();
   });
 
-  it('should login to firebase', async () => {
+  it("should login to firebase", async () => {
     global.fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({ token: 'fake-token' })
+      json: () => Promise.resolve({ token: "fake-token" })
     });
-    const username = 'test@test.fr';
-    const password = 'test123';
+    const username = "test@test.fr";
+    const password = "test123";
     const {
       getByPlaceholderText,
       findByTestId,
@@ -51,10 +51,10 @@ describe('login', () => {
     } = render(<App />);
 
     // Navigate to the account page
-    const accountPage = await findByText('Account');
-    fireEvent(accountPage, 'click');
+    const accountPage = await findByText("Account");
+    fireEvent(accountPage, "click");
     // Type email and password then click login button
-    const loginButton = await findByTestId('touchable-opacity');
+    const loginButton = await findByTestId("touchable-opacity");
     await act(async () => {
       fireEvent.changeText(getByPlaceholderText(/Email/i), username);
       fireEvent.changeText(getByPlaceholderText(/Password/i), password);
@@ -63,10 +63,10 @@ describe('login', () => {
       fireEvent.press(loginButton);
     });
 
-    await waitFor(() => expect(queryByTestId('email'))
+    await waitFor(() => expect(queryByTestId("email"))
       .toBeTruthy());
 
-    expect(getByTestId('email').props.children)
+    expect(getByTestId("email").props.children)
       .toBe(username);
   });
 });
