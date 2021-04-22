@@ -30,8 +30,8 @@ class Profile extends React.Component {
     return (
       <Card style={styles.container}>
         <Text>Vous êtes connectés :</Text>
-        <Text>{Firebase.auth().currentUser.email}</Text>
-        <Button title="Logout" onPress={this.handleLogout} />
+        <Text testID="email">{Firebase.auth().currentUser.email}</Text>
+        <Button testID="logout" title="Logout" onPress={this.handleLogout} />
       </Card>
     );
   }
