@@ -1,46 +1,46 @@
-import 'react-native';
-import React from 'react';
-import { fireEvent, render, waitFor, act } from '@testing-library/react-native';
-import { useNavigation } from '@react-navigation/native';
-import Signup from '../../api/Signup';
-import Firebase from '../../config/firebaseConfig';
+import "react-native";
+import React from "react";
+import { fireEvent, render, waitFor, act } from "@testing-library/react-native";
+import { useNavigation } from "@react-navigation/native";
+import Firebase from "../../config/firebaseConfig";
+import Signup from "../../components/account/Signup";
 
-jest.mock('@react-navigation/native', () => ({
+jest.mock("@react-navigation/native", () => ({
   createNavigatorFactory: jest.fn(),
   useNavigation: jest.fn()
 }));
-jest.mock('@react-native-community/masked-view', () => ({}));
+jest.mock("@react-native-community/masked-view", () => ({}));
 
 beforeEach(() => {
   // @ts-ignore
   useNavigation.mockReset();
 });
 
-describe('Signup', () => {
+describe("Signup", () => {
   afterAll(() => {
     Firebase.delete();
   });
 
-  it('should sign up to firebase', async () => {
+  it("should sign up to firebase", async () => {
     const mockNavigate = jest.fn();
     useNavigation.mockImplementation(() => ({ navigate: mockNavigate }));
     global.fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({ token: 'fake-token' })
+      json: () => Promise.resolve({ token: "fake-token" })
     });
 
-    const firstname = 'test';
-    const lastname = 'test';
+    const firstname = "test";
+    const lastname = "test";
     const email = `${Math.random()
       .toString(36)
       .substring(2, 15)}@test.fr`;
-    const password = 'test123';
+    const password = "test123";
 
     const {
       getByPlaceholderText,
       getByTestId
     } = render(<Signup navigation={mockNavigate} />);
 
-    const button = getByTestId('touchable-opacity');
+    const button = getByTestId("touchable-opacity");
 
     await act(async () => {
       fireEvent.changeText(getByPlaceholderText(/First name/i), firstname);
@@ -56,6 +56,6 @@ describe('Signup', () => {
     await waitFor(() => expect(mockNavigate)
       .toHaveBeenCalledTimes(1));
     expect(mockNavigate)
-      .toHaveBeenCalledWith('Account', { 'screen': 'Profile' });
+      .toHaveBeenCalledWith("Account", { "screen": "Profile" });
   });
 });

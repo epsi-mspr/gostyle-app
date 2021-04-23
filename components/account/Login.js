@@ -4,8 +4,9 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as PropTypes from 'prop-types';
-import Firebase, { dbUsers } from '../config/firebaseConfig';
-import Card from '../components/Card';
+import Firebase, { dbUsers } from '../../config/firebaseConfig';
+import Card from '../Card';
+import signIn from '../../api/firebaseApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     height: 170,
     marginBottom: 15,
-    width: 170,
+    width: 170
   }
 });
 
@@ -67,14 +68,8 @@ class Login extends React.Component {
       email,
       password
     } = this.state;
-    await Firebase.auth()
-      .signOut();
-    try {
-      await Firebase.auth()
-        .signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      alert(error.toString());
-    }
+
+    await signIn(email, password);
   };
 
   getUserCurrent = async (uid) => {
@@ -99,7 +94,7 @@ class Login extends React.Component {
     return (
       <Card style={styles.container}>
         <Image style={styles.logoImage}
-        source={require('../assets/logo-gostyle.png')}
+               source={require('../../assets/logo-gostyle.png')}
         />
         <TextInput
           style={styles.inputBox}

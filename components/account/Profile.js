@@ -4,8 +4,9 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as PropTypes from 'prop-types';
-import Firebase from '../config/firebaseConfig';
-import Card from '../components/Card';
+import Firebase from '../../config/firebaseConfig';
+import Card from '../Card';
+import { loggingOut } from '../../api/firebaseApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,9 +21,7 @@ class Profile extends React.Component {
   handleLogout = () => {
     const { navigation } = this.props;
 
-    Firebase.auth()
-      .signOut()
-      .then(() =>
+    loggingOut().then(() =>
         navigation.navigate('Account', { screen: 'Login' })
       );
   };
@@ -31,8 +30,8 @@ class Profile extends React.Component {
     return (
       <Card style={styles.container}>
         <Text>Vous êtes connectés :</Text>
-        <Text>{Firebase.auth().currentUser.email}</Text>
-        <Button title="Logout" onPress={this.handleLogout} />
+        <Text testID="email">{Firebase.auth().currentUser.email}</Text>
+        <Button testID="logout" title="Logout" onPress={this.handleLogout} />
       </Card>
     );
   }

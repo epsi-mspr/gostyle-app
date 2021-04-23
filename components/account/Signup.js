@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  TextInput, StyleSheet, TouchableOpacity, Text, Button
+  TextInput, StyleSheet, TouchableOpacity, Text, Button, Alert
 } from 'react-native';
 import * as PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import Firebase, { dbUsers } from '../config/firebaseConfig';
-import Card from '../components/Card';
+import Card from '../Card';
+import { singUp } from '../../api/firebaseApi';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,24 +55,32 @@ class Signup extends React.Component {
     };
   }
 
-  handleCreate = async (firstName, lastName, email, password) => {
+  handleCreate = async () => {
     const { navigation } = this.props;
-    try {
-      const res = (await Firebase.auth()
-        .createUserWithEmailAndPassword(email, password)).user;
-      if (res.uid) {
-        const user = {
-          uid: res.uid,
-          firstName,
-          lastName,
-          email
-        };
-        await dbUsers.child(res.uid)
-          .set(user);
-        navigation.navigate('Account', { 'screen': 'Profile' });
-      }
-    } catch (e) {
-      alert(e.toString());
+    const {
+      firstName,
+      lastName,
+      email,
+      password
+    } = this.state;
+
+    if (!firstName) {
+      Alert.alert('First name is required:','Enter your first name');
+    }else if(!lastName){
+      Alert.alert('Last name is required:','Enter your last name');
+    } else if (!email) {
+      Alert.alert('Email is required:','Enter your email.');
+    } else if (!password) {
+      Alert.alert('Password is required:','Enter your password');
+    } else {
+      await singUp(
+        email,
+        password,
+        firstName,
+        lastName
+      );
+      navigation.navigate('Account', { 'screen': 'Profile' });
+
     }
   };
 
@@ -111,7 +119,7 @@ class Signup extends React.Component {
         <TouchableOpacity
           testID="touchable-opacity"
           style={styles.button}
-          onPress={() => this.handleCreate(firstName, lastName, email, password)}
+          onPress={() => this.handleCreate(firstName,lastName, email, password)}
         >
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>

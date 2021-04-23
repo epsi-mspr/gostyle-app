@@ -1,55 +1,72 @@
-import 'react-native';
-import React from 'react';
-import { fireEvent, render, waitFor, act } from '@testing-library/react-native';
-import { useNavigation } from '@react-navigation/native';
-import Login from '../../api/Login';
-import Firebase from '../../config/firebaseConfig';
+import React from "react";
+import { fireEvent, render, waitFor, act } from "@testing-library/react-native";
+import App from "../../App";
 
-jest.mock('@react-navigation/native', () => ({
-  createNavigatorFactory: jest.fn(),
-  useNavigation: jest.fn()
-}));
-jest.mock('@react-native-community/masked-view', () => ({}));
+jest.mock("@react-native-community/masked-view", () => ({}));
 
-beforeEach(() => {
-  // @ts-ignore
-  useNavigation.mockReset();
-});
-
-describe('Login', () => {
-  afterAll(() => {
-    Firebase.delete();
-  });
-
-  it('should login to firebase', async () => {
-    const mockNavigate = jest.fn();
-    useNavigation.mockImplementation(() => ({ navigate: mockNavigate }));
-    global.fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve({ token: 'fake-token' })
-    });
-
-    const username = 'test@test.fr';
-    const password = 'test123';
-
+describe("login", () => {
+  it("should logout correctly", async () => {
+    const username = "test@test.fr";
+    const password = "test123";
     const {
       getByPlaceholderText,
-      getByTestId
-    } = render(<Login />);
+      findByTestId,
+      findByText
+    } = render(<App />);
 
-    const button = getByTestId('touchable-opacity');
-
+    // Navigate to the account page
+    const accountPage = await findByText("Account");
+    fireEvent(accountPage, "click");
+    // Type email and password then click login button
+    const loginButton = await findByTestId("touchable-opacity");
     await act(async () => {
       fireEvent.changeText(getByPlaceholderText(/Email/i), username);
       fireEvent.changeText(getByPlaceholderText(/Password/i), password);
     });
-
     await act(async () => {
-      fireEvent.press(button);
+      fireEvent.press(loginButton);
+    });
+    // Click on the logout button
+    const logoutButton = await findByTestId("logout");
+    await act(async () => {
+      fireEvent.press(logoutButton);
     });
 
-    await waitFor(() => expect(mockNavigate)
-      .toHaveBeenCalledTimes(1));
-    expect(mockNavigate)
-      .toHaveBeenCalledWith('Account', { 'screen': 'Profile' });
+    expect(await findByText("Vous n'avez pas de compte? Clicker ici"))
+      .toBeTruthy();
+  });
+
+  it("should login to firebase", async () => {
+    global.fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({ token: "fake-token" })
+    });
+    const username = "test@test.fr";
+    const password = "test123";
+    const {
+      getByPlaceholderText,
+      findByTestId,
+      queryByTestId,
+      getByTestId,
+      findByText
+    } = render(<App />);
+
+    // Navigate to the account page
+    const accountPage = await findByText("Account");
+    fireEvent(accountPage, "click");
+    // Type email and password then click login button
+    const loginButton = await findByTestId("touchable-opacity");
+    await act(async () => {
+      fireEvent.changeText(getByPlaceholderText(/Email/i), username);
+      fireEvent.changeText(getByPlaceholderText(/Password/i), password);
+    });
+    await act(async () => {
+      fireEvent.press(loginButton);
+    });
+
+    await waitFor(() => expect(queryByTestId("email"))
+      .toBeTruthy());
+
+    expect(getByTestId("email").props.children)
+      .toBe(username);
   });
 });
