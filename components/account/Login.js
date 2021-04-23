@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TextInput, StyleSheet, TouchableOpacity, Text, Button
+  TextInput, StyleSheet, TouchableOpacity, Text, Button, Image
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as PropTypes from 'prop-types';
@@ -42,10 +42,19 @@ const styles = StyleSheet.create({
   },
   buttonSignup: {
     fontSize: 12
+  },
+  logoImage: {
+    borderColor: '#FFF',
+    borderRadius: 85,
+    borderWidth: 3,
+    height: 170,
+    marginBottom: 15,
+    width: 170
   }
 });
 
 class Login extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -80,9 +89,13 @@ class Login extends React.Component {
   };
 
   render() {
+
     const { navigation } = this.props;
     return (
       <Card style={styles.container}>
+        <Image style={styles.logoImage}
+               source={require('../../assets/logo-gostyle.png')}
+        />
         <TextInput
           style={styles.inputBox}
           onChangeText={(newEmail) => this.setState({ email: newEmail })}

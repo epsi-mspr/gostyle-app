@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@muhzi/react-native-user-avatar": "^1.0.7",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.9",
     "@react-navigation/native": "^5.9.4",
